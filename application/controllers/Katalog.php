@@ -16,7 +16,7 @@ class Katalog extends CI_Controller
         $data['categories'] = $this->Kategori_model->get_all();
         // show all menus by default (so category filter can work across entire catalog)
         $data['menus'] = $this->Menu_model->get_with_reviews();
-        $data['ulasan_pelanggan'] = $this->Ulasan_model->get_approved_reviews(5);
+        $data['ulasan_pelanggan'] = $this->Ulasan_model->get_approved_reviews();
         $this->load->view('pelanggan/katalog', $data);
     }
 

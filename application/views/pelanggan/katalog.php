@@ -40,7 +40,12 @@
 <!-- MENU SECTION -->
 <section id="menu" class="pb-5">
     <div class="container">
-        <h4 class="fw-bold mb-3 text-center text-md-start text-white">Menu Pilihan</h4>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="fw-bold mb-0 text-center text-md-start text-white">Menu Pilihan</h4>
+            <div>
+                <button id="btnToggleMenuView" class="btn btn-sm btn-outline-light" type="button">Lihat Semua</button>
+            </div>
+        </div>
         <!-- category tiles (gabungan dengan filter) -->
         <div class="mb-3 text-center">
             <div class="d-flex justify-content-center flex-wrap gap-3 mt-3">
@@ -49,7 +54,7 @@
                         <img src="<?= base_url('assets/img/all-categories.png') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover"> <!-- Ganti dengan gambar untuk 'Semua' jika ada -->
                         <div class="small" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:5px 0; backdrop-filter:blur(5px);">Semua</div>
                     </div>
-                </div>
+                </div>  
                 <?php foreach ($categories as $c): ?>
                     <div class="text-center kategori-tile" style="width:110px;cursor:pointer; margin-bottom: 40px;" data-kategori-id="<?= $c->id_kategori ?>">
                         <div style="width:110px; height:110px; overflow:hidden; border-radius:50%; position:relative; background:#fff; display:flex; align-items:center; justify-content:center;">
@@ -61,43 +66,48 @@
             </div>
         </div>
 
-        <div class="row gy-3" id="menu-list">
-            <?php foreach ($menus as $m): ?>
-                <div class="col-6 col-md-4 col-lg-3 menu-item" data-kategori-id="<?= isset($m->kategori_id) ? $m->kategori_id : (isset($m->kategori) ? $m->kategori : 'all') ?>">
-                    <div class="card h-100 animate-card border-0 shadow-sm">
-                        <div class="ratio ratio-4x3">
-                            <img src="<?= base_url('assets/uploads/' . ($m->gambar ?? 'no-image.png')) ?>" class="card-img-top object-fit-cover menu-image"
-                                data-id="<?= $m->id_menu ?>"
-                                data-nama="<?= htmlspecialchars($m->nama_menu ?? '', ENT_QUOTES) ?>"
-                                data-harga="<?= isset($m->harga) ? $m->harga : 0 ?>"
-                                data-deskripsi="<?= htmlspecialchars($m->deskripsi ?? '', ENT_QUOTES) ?>"
-                                data-detail="<?= htmlspecialchars($m->detail_lengkap ?? ($m->deskripsi ?? ''), ENT_QUOTES) ?>"
-                                data-gambar="<?= $m->gambar ?? 'no-image.png' ?>"
-                                data-avg-rating="<?= isset($m->avg_rating) ? $m->avg_rating : 0 ?>"
-                                data-jumlah-ulasan="<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?>"
-                                alt="<?= htmlspecialchars($m->nama_menu ?? '', ENT_QUOTES) ?>" style="cursor:pointer">
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h6 class="card-title mb-1"><?= isset($m->nama_menu) ? $m->nama_menu : '' ?></h6>
-                            <p class="text-muted small mb-2"><?= isset($m->deskripsi) ? word_limiter($m->deskripsi, 12) : '' ?></p>
-                            <small class="text-warning fw-bold rating-display"><?= round(isset($m->avg_rating) ? $m->avg_rating : 0, 1) ?>/5 ⭐ (<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?> Ulasan)</small>
-                            <div class="mt-auto d-flex justify-content-between align-items-center">
-                                <div class="fw-bold text-danger">Rp <?= number_format($m->harga, 0, ',', '.') ?></div>
-                                <div class="d-flex align-items-center">
-                                    <div class="input-group input-group-sm qty-control me-2" data-id="<?= $m->id_menu ?>" style="width:80px">
-                                        <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
-                                        <input type="text" class="form-control text-center qty-value" value="1" readonly style="width:20px; padding: 5px;">
-                                        <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+        <div>
+            <div class="row gy-3" id="menu-list">
+                <?php foreach ($menus as $index => $m): ?>
+                    <div class="col-6 col-md-4 col-lg-3 menu-item" data-kategori-id="<?= isset($m->kategori_id) ? $m->kategori_id : (isset($m->kategori) ? $m->kategori : 'all') ?>" data-menu-index="<?= $index ?>">
+                        <div class="card h-100 animate-card border-0 shadow-sm">
+                            <div class="ratio ratio-4x3">
+                                <img src="<?= base_url('assets/uploads/' . ($m->gambar ?? 'no-image.png')) ?>" class="card-img-top object-fit-cover menu-image"
+                                    data-id="<?= $m->id_menu ?>"
+                                    data-nama="<?= htmlspecialchars($m->nama_menu ?? '', ENT_QUOTES) ?>"
+                                    data-harga="<?= isset($m->harga) ? $m->harga : 0 ?>"
+                                    data-deskripsi="<?= htmlspecialchars($m->deskripsi ?? '', ENT_QUOTES) ?>"
+                                    data-detail="<?= htmlspecialchars($m->detail_lengkap ?? ($m->deskripsi ?? ''), ENT_QUOTES) ?>"
+                                    data-gambar="<?= $m->gambar ?? 'no-image.png' ?>"
+                                    data-avg-rating="<?= isset($m->avg_rating) ? $m->avg_rating : 0 ?>"
+                                    data-jumlah-ulasan="<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?>"
+                                    alt="<?= htmlspecialchars($m->nama_menu ?? '', ENT_QUOTES) ?>" style="cursor:pointer">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title mb-1"><?= isset($m->nama_menu) ? $m->nama_menu : '' ?></h6>
+                                <p class="text-muted small mb-2"><?= isset($m->deskripsi) ? word_limiter($m->deskripsi, 12) : '' ?></p>
+                                <small class="text-warning fw-bold rating-display"><?= round(isset($m->avg_rating) ? $m->avg_rating : 0, 1) ?>/5 ⭐ (<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?> Ulasan)</small>
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold text-danger">Rp <?= number_format($m->harga, 0, ',', '.') ?></div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="input-group input-group-sm qty-control me-2" data-id="<?= $m->id_menu ?>" style="width:80px">
+                                            <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                            <input type="text" class="form-control text-center qty-value" value="1" readonly style="width:20px; padding: 5px;">
+                                            <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                        </div>
+                                        <button class="btn btn-sm btn-danger add-to-cart" data-id="<?= $m->id_menu ?>" data-name="<?= htmlspecialchars($m->nama_menu) ?>" data-price="<?= $m->harga ?>">
+                                            <i class="bi bi-cart-plus-fill"></i>
+                                        </button>
                                     </div>
-                                    <button class="btn btn-sm btn-danger add-to-cart" data-id="<?= $m->id_menu ?>" data-name="<?= htmlspecialchars($m->nama_menu) ?>" data-price="<?= $m->harga ?>">
-                                        <i class="bi bi-cart-plus-fill"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-white">Menampilkan <span id="menuCountShown">0</span> dari <span id="menuCountTotal"><?= count($menus) ?></span> menu</small>
+            </div>
         </div>
     </div>
 </section>
@@ -164,7 +174,7 @@
         </div>
         <div class="col-md-6 d-flex" style="align-items:stretch;">
             <div style="width:100%; border-radius:12px; overflow:hidden;">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.305080678!2d106.829518414771!3d-6.223590995495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e2b0000001%3A0x4a948d0c1d0f7f!2sMonas%2C%20Jakarta!5e0!3m2!1sen!2sid!4v1697788999999999!5m2!1sen!2sid" width="100%" height="300" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9595899971787!2d98.74362218741439!3d3.5967361108179543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131d71ef31655%3A0xafa68e3f1072fad5!2sToko%20Mas%20%26%20Permata%20ARUL%20MANDAI!5e0!3m2!1sid!2sid!4v1761053676380!5m2!1sid!2sid" width="100%" height="300" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
 </section>
@@ -172,11 +182,11 @@
 <!-- ULASAN PELANGGAN SECTION -->
 <section class="container mb-5">
     <h4 class="fw-bold mb-4 text-center text-white">Ulasan dari Pelanggan Kami</h4>
-    <div class="row gy-4">
+    <div class="row gy-4" id="ulasan-list">
         <?php if (!empty($ulasan_pelanggan)):
-            foreach ($ulasan_pelanggan as $ulasan):
+            foreach ($ulasan_pelanggan as $u_index => $ulasan):
         ?>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 ulasan-item" data-rating="<?= isset($ulasan->rating) ? (int)$ulasan->rating : 0 ?>" data-ulasan-index="<?= $u_index ?>">
                     <div class="card h-100 shadow-sm" style="background:rgba(255,255,255,0.9); backdrop-filter:blur(5px);">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
@@ -205,6 +215,9 @@
                 <p class="text-white">Belum ada ulasan.</p>
             </div>
         <?php endif; ?>
+    </div>
+    <div class="text-center mt-3">
+        <button id="btnToggleUlasanView" class="btn btn-sm btn-outline-light">Lihat ulasan lain</button>
     </div>
 </section>
 
@@ -572,6 +585,92 @@
                 }
             }
         });
+
+        // --- New: Menu & Ulasan view controls ---
+        (function setupViewControls() {
+            const MAX_VISIBLE = 8;
+            let showAllMenus = false;
+            let showAllUlasan = false;
+
+            const menuList = document.getElementById('menu-list');
+            const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+            const btnToggleMenuView = document.getElementById('btnToggleMenuView');
+            const menuCountShown = document.getElementById('menuCountShown');
+            const menuCountTotal = document.getElementById('menuCountTotal');
+
+            const ulasanItems = Array.from(document.querySelectorAll('.ulasan-item'));
+            const btnToggleUlasanView = document.getElementById('btnToggleUlasanView');
+
+            function applyMenuFilter(currentKategoriId) {
+                // showAllMenus toggles whether we cap at MAX_VISIBLE
+                const visible = [];
+                menuItems.forEach(item => {
+                    let itemKat = item.dataset.kategoriId || item.getAttribute('data-kategori-id') || '';
+                    item.style.display = (currentKategoriId === 'all' || itemKat === String(currentKategoriId)) ? '' : 'none';
+                    if (item.style.display !== 'none') visible.push(item);
+                });
+
+                if (!showAllMenus && visible.length > MAX_VISIBLE) {
+                    visible.forEach((it, idx) => {
+                        it.style.display = (idx < MAX_VISIBLE) ? '' : 'none';
+                    });
+                }
+
+                // update counters
+                const shown = document.querySelectorAll('#menu-list .menu-item:not([style*="display: none"])').length;
+                menuCountShown.innerText = shown;
+                menuCountTotal.innerText = menuItems.length;
+            }
+
+            function applyUlasanFilter() {
+                if (!showAllUlasan) {
+                    // show only top-rated ulasan: sort by data-rating and show top 3
+                    const sorted = ulasanItems.slice().sort((a, b) => {
+                        return parseInt(b.dataset.rating || 0, 10) - parseInt(a.dataset.rating || 0, 10);
+                    });
+                    const top = new Set(sorted.slice(0, 3).map(n => n.dataset.ulasanIndex));
+                    ulasanItems.forEach(item => {
+                        item.style.display = top.has(item.dataset.ulasanIndex) ? '' : 'none';
+                    });
+                } else {
+                    ulasanItems.forEach(item => item.style.display = '');
+                }
+            }
+
+            // initial apply: default kategori 'all'
+            applyMenuFilter('all');
+            applyUlasanFilter();
+
+            // hook into category clicks (delegation already toggles .active), observe changes
+            document.querySelectorAll('.kategori-tile').forEach(tile => tile.addEventListener('click', () => {
+                const kategoriId = (tile.dataset.kategoriId || tile.getAttribute('data-kategori-id') || 'all').toString().trim();
+                // reset showAllMenus when switching category
+                showAllMenus = false;
+                btnToggleMenuView.innerText = 'Lihat Semua';
+                applyMenuFilter(kategoriId);
+            }));
+
+            btnToggleMenuView.addEventListener('click', () => {
+                showAllMenus = !showAllMenus;
+                btnToggleMenuView.innerText = showAllMenus ? 'Tampil Terbatas' : 'Lihat Semua';
+                // find currently active category
+                const active = document.querySelector('.kategori-tile.active');
+                const kategoriId = active ? (active.dataset.kategoriId || active.getAttribute('data-kategori-id')) : 'all';
+                applyMenuFilter(kategoriId || 'all');
+            });
+
+            btnToggleUlasanView.addEventListener('click', () => {
+                showAllUlasan = !showAllUlasan;
+                btnToggleUlasanView.innerText = showAllUlasan ? 'Sembunyikan ulasan lain' : 'Lihat ulasan lain';
+                applyUlasanFilter();
+            });
+
+            // expose for debugging
+            window.__rils_menu_control = {
+                applyMenuFilter,
+                applyUlasanFilter
+            };
+        })();
 
         // --- Inisialisasi Awal ---
         updateCartCount();

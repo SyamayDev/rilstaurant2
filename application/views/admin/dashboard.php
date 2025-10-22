@@ -7,13 +7,36 @@
     <div class="col-md-6">
         <div class="card p-3">
             <h5>Makanan Terbaik (Rating)</h5>
-            <canvas id="topChart"></canvas>
+            <div style="height:280px;">
+                <canvas id="topChart"></canvas>
+            </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card p-3">
             <h5>Penjualan (14 hari)</h5>
-            <canvas id="salesChart"></canvas>
+            <div style="height:280px;">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5>Pesanan per Status</h5>
+            <div style="height:280px;">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5>Menu Terlaris (Jumlah Pesanan)</h5>
+            <div style="height:280px;">
+                <canvas id="bestSellerChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -35,6 +58,21 @@
                 data: topData,
                 backgroundColor: 'rgba(107,15,15,0.7)'
             }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: Math.max(...topData, 5)
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
         }
     });
 
@@ -55,6 +93,76 @@
                 backgroundColor: 'rgba(107,15,15,0.1)',
                 fill: true
             }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    // suggest a max based on data to avoid excessive stretching
+                    suggestedMax: Math.max(...salesData, 10)
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // --- New chart: Pesanan per Status ---
+    const statusLabels = <?= isset($orders_by_status) ? json_encode(array_map(function ($o) {
+                                return $o->status;
+                            }, $orders_by_status)) : json_encode(['pending', 'diproses', 'dikirim', 'selesai']) ?>;
+    const statusData = <?= isset($orders_by_status) ? json_encode(array_map(function ($o) {
+                            return (int)$o->count;
+                        }, $orders_by_status)) : json_encode([5, 12, 8, 20]) ?>;
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusData,
+                backgroundColor: ['#ffc107', '#fd7e14', '#0dcaf0', '#198754']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // --- New chart: Menu Terlaris ---
+    const bestLabels = <?= isset($top_sold_menus) ? json_encode(array_map(function ($m) {
+                            return $m->nama_menu;
+                        }, $top_sold_menus)) : json_encode(array_slice(array_map(function ($m) {
+                            return $m->nama_menu;
+                        }, $top_menus), 0, 5)) ?>;
+    const bestData = <?= isset($top_sold_menus) ? json_encode(array_map(function ($m) {
+                            return (int)$m->qty;
+                        }, $top_sold_menus)) : json_encode(array_slice(array_map(function ($m) {
+                            return (int)($m->jumlah_pesanan ?? 0);
+                        }, $top_menus), 0, 5)) ?>;
+    new Chart(document.getElementById('bestSellerChart'), {
+        type: 'bar',
+        data: {
+            labels: bestLabels,
+            datasets: [{
+                label: 'Jumlah',
+                data: bestData,
+                backgroundColor: 'rgba(40,167,69,0.7)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
 </script>

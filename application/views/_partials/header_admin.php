@@ -37,7 +37,7 @@
                 z-index: 1050;
                 top: 0;
                 left: 0;
-                height: 100vh;
+                height: 500vh;
                 transform: translateX(-110%);
             }
 

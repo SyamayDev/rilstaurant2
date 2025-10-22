@@ -61,7 +61,10 @@
 
         <div class="mt-3">
             <a href="<?= base_url('pesanan') ?>" class="btn btn-outline-secondary">Kembali</a>
-            <?php if (strtolower((string)$pesanan->status) === 'selesai'): ?>
+            <?php
+            // show receipt button when status is 'diproses' (dimasak) or 'selesai'
+            $st = strtolower((string)$pesanan->status);
+            if (in_array($st, ['diproses', 'dimasak', 'selesai'])): ?>
                 <a href="<?= base_url('pesanan/receipt/' . $pesanan->id_pesanan) ?>" target="_blank" class="btn btn-success ms-2">Cetak Struk</a>
             <?php endif; ?>
         </div>
