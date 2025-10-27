@@ -1,7 +1,7 @@
 <?php $this->load->view('_partials/header_admin'); ?>
 <h2>Pesanan</h2>
 <div class="table-responsive-horizontal">
-    <table class="table table-hover align-middle">
+    <table id="pesananTable" class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>ID</th>
@@ -37,3 +37,9 @@
     </table>
 </div>
 <?php $this->load->view('_partials/footer_admin'); ?>
+
+<script>
+$(document).ready(function() {
+    $('#pesananTable').DataTable();
+});
+</script>

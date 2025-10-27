@@ -46,17 +46,18 @@
                 <button id="btnToggleMenuView" class="btn btn-sm btn-outline-light" type="button">Lihat Semua</button>
             </div>
         </div>
-        <!-- category tiles (gabungan dengan filter) -->
-        <div class="mb-3 text-center">
-            <div class="d-flex justify-content-center flex-wrap gap-3 mt-3">
-                <div class="text-center kategori-tile" style="width:110px;cursor:pointer" data-kategori-id="all">
+
+        <!-- Category tiles (gabungan dengan filter) -->
+        <div class="mb-3">
+            <div class="category-tiles-container d-flex flex-nowrap gap-3 mt-3" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+                <div class="text-center kategori-tile" style="flex: 0 0 110px; cursor:pointer" data-kategori-id="all">
                     <div style="width:110px; height:110px; overflow:hidden; border-radius:50%; position:relative; background:#fff; display:flex; align-items:center; justify-content:center;">
-                        <img src="<?= base_url('assets/img/all-categories.png') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover"> <!-- Ganti dengan gambar untuk 'Semua' jika ada -->
+                        <img src="<?= base_url('assets/img/all-categories.png') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover">
                         <div class="small" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:5px 0; backdrop-filter:blur(5px);">Semua</div>
                     </div>
                 </div>  
                 <?php foreach ($categories as $c): ?>
-                    <div class="text-center kategori-tile" style="width:110px;cursor:pointer; margin-bottom: 40px;" data-kategori-id="<?= $c->id_kategori ?>">
+                    <div class="text-center kategori-tile" style="flex: 0 0 110px; cursor:pointer; margin-bottom: 40px;" data-kategori-id="<?= $c->id_kategori ?>">
                         <div style="width:110px; height:110px; overflow:hidden; border-radius:50%; position:relative; background:#fff; display:flex; align-items:center; justify-content:center;">
                             <img src="<?= base_url('assets/uploads/' . ($c->gambar ?? 'no-image.png')) ?>" alt="<?= $c->nama_kategori ?>" style="max-width:100%; max-height:100%; object-fit:cover">
                             <div class="small" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:5px 0; backdrop-filter:blur(5px);"><?= $c->nama_kategori ?></div>
@@ -177,6 +178,7 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9595899971787!2d98.74362218741439!3d3.5967361108179543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131d71ef31655%3A0xafa68e3f1072fad5!2sToko%20Mas%20%26%20Permata%20ARUL%20MANDAI!5e0!3m2!1sid!2sid!4v1761053676380!5m2!1sid!2sid" width="100%" height="300" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
+    </div>
 </section>
 
 <!-- ULASAN PELANGGAN SECTION -->
@@ -249,12 +251,10 @@
         font-size: .85rem;
         line-height: 1.2;
         max-height: 3.6rem;
-        /* ~3 lines */
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* Ensure card images keep aspect ratio and don't overflow on small screens */
     .ratio-4x3 {
         aspect-ratio: 4 / 3;
         overflow: hidden;
@@ -265,6 +265,35 @@
         height: 100%;
         object-fit: cover;
         display: block;
+    }
+
+    /* Horizontal scrolling for category tiles on mobile */
+    .category-tiles-container {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .category-tiles-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    @media (max-width: 576px) {
+        .col-md-6:nth-child(1) {
+            margin-bottom: 20px; /* Jarak vertikal di bawah Jam Operasional */
+        }
+
+    /* Pastikan peta dan konten lainnya tetap rapi */
+    .col-md-6 {
+        display: flex;
+        flex-direction: column;
+    }
+        .category-tiles-container {
+            padding-bottom: 10px; /* Space for better scrolling experience */
+        }
+
+        .kategori-tile {
+            margin-bottom: 0 !important; /* Remove bottom margin for mobile */
+        }
     }
 
     /* Stack price and controls on very small screens */
@@ -332,7 +361,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-
         // --- Inisialisasi Modal (hanya sekali) ---
         const modalHtml = `
     <div class="modal fade" id="menuDetailModal" tabindex="-1">
@@ -386,7 +414,6 @@
         document.body.insertAdjacentHTML('beforeend', modalHtml);
         const menuModal = new bootstrap.Modal(document.getElementById('menuDetailModal'));
 
-
         // --- Fungsi Bantuan (Helpers) ---
         const updateCartCount = () => {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -430,7 +457,6 @@
                 star.textContent = i < rating ? '★' : '☆';
             });
         };
-
 
         // --- Event Listener Utama (Delegation) ---
         document.body.addEventListener('click', async (e) => {
@@ -517,11 +543,9 @@
             // 4. Klik Filter Kategori (menggunakan data-kategori-id)
             if (target.closest('.kategori-tile')) {
                 const tile = target.closest('.kategori-tile');
-                // read and trim category id (handle possible padded DB values)
                 let kategoriId = tile.dataset.kategoriId;
                 if (!kategoriId) kategoriId = tile.getAttribute('data-kategori-id');
                 kategoriId = kategoriId ? String(kategoriId).trim() : 'all';
-                // update active visual state
                 document.querySelectorAll('.kategori-tile').forEach(t => t.classList.remove('active'));
                 tile.classList.add('active');
                 document.querySelectorAll('.menu-item').forEach(item => {
@@ -602,7 +626,6 @@
             const btnToggleUlasanView = document.getElementById('btnToggleUlasanView');
 
             function applyMenuFilter(currentKategoriId) {
-                // showAllMenus toggles whether we cap at MAX_VISIBLE
                 const visible = [];
                 menuItems.forEach(item => {
                     let itemKat = item.dataset.kategoriId || item.getAttribute('data-kategori-id') || '';
@@ -616,7 +639,6 @@
                     });
                 }
 
-                // update counters
                 const shown = document.querySelectorAll('#menu-list .menu-item:not([style*="display: none"])').length;
                 menuCountShown.innerText = shown;
                 menuCountTotal.innerText = menuItems.length;
@@ -624,7 +646,6 @@
 
             function applyUlasanFilter() {
                 if (!showAllUlasan) {
-                    // show only top-rated ulasan: sort by data-rating and show top 3
                     const sorted = ulasanItems.slice().sort((a, b) => {
                         return parseInt(b.dataset.rating || 0, 10) - parseInt(a.dataset.rating || 0, 10);
                     });
@@ -637,14 +658,11 @@
                 }
             }
 
-            // initial apply: default kategori 'all'
             applyMenuFilter('all');
             applyUlasanFilter();
 
-            // hook into category clicks (delegation already toggles .active), observe changes
             document.querySelectorAll('.kategori-tile').forEach(tile => tile.addEventListener('click', () => {
                 const kategoriId = (tile.dataset.kategoriId || tile.getAttribute('data-kategori-id') || 'all').toString().trim();
-                // reset showAllMenus when switching category
                 showAllMenus = false;
                 btnToggleMenuView.innerText = 'Lihat Semua';
                 applyMenuFilter(kategoriId);
@@ -653,7 +671,6 @@
             btnToggleMenuView.addEventListener('click', () => {
                 showAllMenus = !showAllMenus;
                 btnToggleMenuView.innerText = showAllMenus ? 'Tampil Terbatas' : 'Lihat Semua';
-                // find currently active category
                 const active = document.querySelector('.kategori-tile.active');
                 const kategoriId = active ? (active.dataset.kategoriId || active.getAttribute('data-kategori-id')) : 'all';
                 applyMenuFilter(kategoriId || 'all');
@@ -665,14 +682,12 @@
                 applyUlasanFilter();
             });
 
-            // expose for debugging
             window.__rils_menu_control = {
                 applyMenuFilter,
                 applyUlasanFilter
             };
         })();
 
-        // --- Inisialisasi Awal ---
         updateCartCount();
     });
 </script>

@@ -5,7 +5,7 @@
 </div>
 <div class="card">
     <div class="card-body">
-        <table class="table table-bordered">
+        <table id="kategoriTable" class="table table-bordered">
             <thead>
                 <tr>
                     <th>Gambar</th>
@@ -71,6 +71,10 @@
 <?php $this->load->view('_partials/footer_admin'); ?>
 
 <script>
+$(document).ready(function() {
+    $('#kategoriTable').DataTable();
+});
+
     document.querySelectorAll('.edit-kategori').forEach(b => b.addEventListener('click', async () => {
         const id = b.dataset.id;
         const res = await fetch('<?= base_url('kategori/edit/') ?>' + id);

@@ -38,7 +38,7 @@
     <div class="col-md-6">
         <h5>Daftar Menu</h5>
         <div class="table-responsive-horizontal">
-            <table class="table table-bordered">
+            <table id="menuTable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Gambar</th>
@@ -68,44 +68,36 @@
         </div>
     </div>
 </div>
-<?php $this->load->view('_partials/footer_admin'); ?>
 
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="editForm" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Menu</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="id" id="edit-id">
-                    <div class="mb-2"><input id="edit-nama" name="nama_menu" class="form-control"></div>
-                    <div class="mb-2"><input id="edit-harga" name="harga" class="form-control"></div>
-                    <div class="mb-2">
-                        <select id="edit-kategori" name="kategori" class="form-control">
-                            <option value="">-- Pilih Kategori --</option>
-                            <?php if (!empty($categories)): foreach ($categories as $c): ?>
-                                    <option value="<?= $c->id_kategori ?>"><?= $c->nama_kategori ?></option>
-                            <?php endforeach;
-                            endif; ?>
-                        </select>
-                    </div>
-                    <div class="mb-2"><input id="edit-stok" name="stok" class="form-control"></div>
-                    <div class="mb-2"><textarea id="edit-deskripsi" name="deskripsi" class="form-control"></textarea></div>
-                    <div class="mb-2"><textarea id="edit-detail" name="detail_lengkap" class="form-control"></textarea></div>
-                    <div class="mb-2"><input type="file" name="gambar" accept="image/*" class="form-control"></div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger" id="saveEdit">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- CKEditor 5 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+$(document).ready(function() {
+    const $table = $('#menuTable');
+    if ($table.length > 0) {
+        console.log('✅ DataTable siap diinisialisasi');
+        $table.DataTable({
+            responsive: true,
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ data",
+                info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "›",
+                    previous: "‹"
+                }
+            }
+        });
+    } else {
+        console.warn('⚠️ Tabel #menuTable belum dimuat.');
+    }
+});
+</script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', async () => {
         const id = b.getAttribute('data-id');
         const res = await fetch('<?= base_url('menu/edit/') ?>' + id);
@@ -121,30 +113,25 @@
         form.action = '<?= base_url('menu/update/') ?>' + id;
         new bootstrap.Modal(document.getElementById('editModal')).show();
     }));
-</script>
 
-<!-- CKEditor 5 -->
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-<script>
-    // init CKEditor for create form
-    document.addEventListener('DOMContentLoaded', function() {
-        const createTextarea = document.querySelector('textarea[name="detail_lengkap"]');
-        if (createTextarea) {
-            ClassicEditor.create(createTextarea).catch(e => console.error(e));
+    const createTextarea = document.querySelector('textarea[name="detail_lengkap"]');
+    if (createTextarea) {
+        ClassicEditor.create(createTextarea).catch(e => console.error(e));
+    }
+    // edit modal editor will be created on demand when modal shown
+    let editEditor;
+    document.getElementById('editModal').addEventListener('shown.bs.modal', function() {
+        const el = document.getElementById('edit-detail');
+        if (!el) return;
+        if (!editEditor) {
+            ClassicEditor.create(el).then(ed => {
+                editEditor = ed;
+            }).catch(e => console.error(e));
+        } else {
+            // sync textarea value into editor
+            editEditor.setData(el.value || '');
         }
-        // edit modal editor will be created on demand when modal shown
-        let editEditor;
-        document.getElementById('editModal').addEventListener('shown.bs.modal', function() {
-            const el = document.getElementById('edit-detail');
-            if (!el) return;
-            if (!editEditor) {
-                ClassicEditor.create(el).then(ed => {
-                    editEditor = ed;
-                }).catch(e => console.error(e));
-            } else {
-                // sync textarea value into editor
-                editEditor.setData(el.value || '');
-            }
-        });
     });
+});
 </script>
+<?php $this->load->view('_partials/footer_admin'); ?>

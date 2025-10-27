@@ -8,7 +8,7 @@
 </ul>
 
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table id="ulasanTable" class="table table-bordered">
         <thead>
             <tr>
                 <th>Menu</th>
@@ -43,6 +43,10 @@
 <?php $this->load->view('_partials/footer_admin'); ?>
 
 <script>
+$(document).ready(function() {
+    $('#ulasanTable').DataTable();
+});
+
     document.querySelectorAll('.approve').forEach(b => b.addEventListener('click', async () => {
         const id = b.dataset.id;
         const res = await fetch('<?= base_url('admin_ulasan/set_status') ?>', {

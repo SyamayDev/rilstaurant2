@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin - Restoran</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <style>
         .sidebar {
             background: #6b0f0f;
@@ -66,6 +69,7 @@
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('pesanan') ?>">Pesanan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_ulasan') ?>">Ulasan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('laporan') ?>">Laporan</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/qr_code') ?>">QR Code</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/logout') ?>">Logout</a></li>
             </ul>
             <div class="mt-auto pt-3 border-top" style="font-size:13px;">

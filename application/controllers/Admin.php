@@ -44,6 +44,12 @@ class Admin extends CI_Controller
         $this->load->view('admin/dashboard', $data);
     }
 
+    public function qr_code()
+    {
+        if (!$this->session->userdata('admin_logged')) redirect('admin');
+        $this->load->view('admin/qr_code');
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('admin_logged');
