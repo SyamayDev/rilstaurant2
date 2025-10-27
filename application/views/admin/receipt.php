@@ -78,6 +78,15 @@
 
 <body>
     <div class="receipt">
+        
+        <div class="logo">
+            <?php if (file_exists(FCPATH . 'assets/img/logo.png')): ?>
+                <img width="100px" height="100px" style="border-radius: 20px; margin-bottom: 20px;" src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
+            <?php else: ?>
+                <h2>Rilstaurant</h2>
+            <?php endif; ?>
+        </div>
+
         <div class="meta">
             <div>No. Pesanan: <strong>#<?= htmlspecialchars($pesanan->id_pesanan) ?></strong></div>
             <div>Meja: <?= htmlspecialchars($pelanggan->no_meja ?? '-') ?> • Pelanggan: <?= htmlspecialchars($pelanggan->nama ?? '-') ?></div>
@@ -98,14 +107,6 @@
         <div class="small" style="margin-top:12px; margin-bottom: 20px; text-align:center">
             Terima kasih telah memesan!<br>
             Silakan simpan struk ini sebagai bukti pembayaran.
-        </div>
-
-        <div class="logo">
-            <?php if (file_exists(FCPATH . 'assets/img/logo.png')): ?>
-                <img width="100px" height="100px" src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
-            <?php else: ?>
-                <h2>Rilstaurant</h2>
-            <?php endif; ?>
         </div>
     </div>
     <script>

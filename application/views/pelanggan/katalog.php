@@ -82,23 +82,31 @@
                                     data-gambar="<?= $m->gambar ?? 'no-image.png' ?>"
                                     data-avg-rating="<?= isset($m->avg_rating) ? $m->avg_rating : 0 ?>"
                                     data-jumlah-ulasan="<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?>"
+                                    data-stok="<?= isset($m->stok) ? $m->stok : 0 ?>"
                                     alt="<?= htmlspecialchars($m->nama_menu ?? '', ENT_QUOTES) ?>" style="cursor:pointer">
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <h6 class="card-title mb-1"><?= isset($m->nama_menu) ? $m->nama_menu : '' ?></h6>
                                 <p class="text-muted small mb-2"><?= isset($m->deskripsi) ? word_limiter($m->deskripsi, 12) : '' ?></p>
                                 <small class="text-warning fw-bold rating-display"><?= round(isset($m->avg_rating) ? $m->avg_rating : 0, 1) ?>/5 ⭐ (<?= isset($m->jumlah_ulasan) ? $m->jumlah_ulasan : 0 ?> Ulasan)</small>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <div class="fw-bold text-danger">Rp <?= number_format($m->harga, 0, ',', '.') ?></div>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold text-danger">Rp <?= number_format($m->harga, 0, ',', '.') ?></div>
+                                        <small class="text-muted">Stok: <?= isset($m->stok) ? $m->stok : 0 ?></small>
+                                    </div>
                                     <div class="d-flex align-items-center">
-                                        <div class="input-group input-group-sm qty-control me-2" data-id="<?= $m->id_menu ?>" style="width:80px">
-                                            <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
-                                            <input type="text" class="form-control text-center qty-value" value="1" readonly style="width:20px; padding: 5px;">
-                                            <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
-                                        </div>
-                                        <button class="btn btn-sm btn-danger add-to-cart" data-id="<?= $m->id_menu ?>" data-name="<?= htmlspecialchars($m->nama_menu) ?>" data-price="<?= $m->harga ?>">
-                                            <i class="bi bi-cart-plus-fill"></i>
-                                        </button>
+                                        <?php if (isset($m->stok) && $m->stok > 0): ?>
+                                            <div class="input-group input-group-sm qty-control me-2" data-id="<?= $m->id_menu ?>" data-stok="<?= $m->stok ?>" style="width:80px">
+                                                <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                                <input type="text" class="form-control text-center qty-value" value="1" style="width:20px; padding: 5px;">
+                                                <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-danger add-to-cart" data-id="<?= $m->id_menu ?>" data-name="<?= htmlspecialchars($m->nama_menu) ?>" data-price="<?= $m->harga ?>">
+                                                <i class="bi bi-cart-plus-fill"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="btn btn-sm btn-secondary" disabled>Stok Habis</button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -379,6 +387,7 @@
                             <h3 id="md-name" class="fw-bold"></h3>
                             <p class="text-danger h4 fw-bold mb-3" id="md-price"></p>
                             <p id="md-rating" class="text-warning fw-bold mb-3"></p>
+                            <p id="md-stok" class="text-muted fw-bold mb-3"></p>
                             <p id="md-detail" class="text-muted"></p>
                             <hr>
                             <h6 class="mb-2">Tinggalkan Ulasan</h6>
@@ -424,9 +433,19 @@
             }
         };
 
-        const addToCart = (id, name, price, qty = 1) => {
+        const addToCart = (id, name, price, qty = 1, stok) => {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const existingItem = cart.find(item => item.id_menu == id);
+            const qtyInCart = existingItem ? existingItem.jumlah : 0;
+
+            if (stok !== undefined && qty + qtyInCart > stok) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stok Tidak Cukup',
+                    html: `Sisa stok untuk <b>${name}</b> hanya <b>${stok}</b>.<br>Anda sudah punya <b>${qtyInCart}</b> di keranjang.`,
+                });
+                return;
+            }
 
             if (existingItem) {
                 existingItem.jumlah += qty;
@@ -446,9 +465,9 @@
                 toast: true,
                 position: 'top-end',
                 icon: 'success',
-                title: 'Ditambahkan ke keranjang',
+                title: `${qty}x ${name} ditambahkan`,
                 showConfirmButton: false,
-                timer: 1200
+                timer: 1500
             });
         };
 
@@ -465,11 +484,26 @@
             // 1. Klik Tombol Plus/Minus pada Card
             if (target.closest('.btn-plus, .btn-minus')) {
                 const qtyControl = target.closest('.qty-control');
+                if (!qtyControl) return;
+
                 const input = qtyControl.querySelector('.qty-value');
-                let value = parseInt(input.value);
+                const stok = parseInt(qtyControl.dataset.stok, 10);
+                let value = parseInt(input.value, 10);
+
                 if (target.closest('.btn-plus')) {
-                    value = Math.min(99, value + 1);
-                } else {
+                    if (value < stok) {
+                        value++;
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'warning',
+                            title: 'Stok tidak mencukupi',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } else if (target.closest('.btn-minus')) {
                     value = Math.max(1, value - 1);
                 }
                 input.value = value;
@@ -478,12 +512,13 @@
             // 2. Klik Tombol "Add to Cart" pada Card
             if (target.closest('.add-to-cart')) {
                 const btn = target.closest('.add-to-cart');
-                const id = btn.dataset.id;
                 const card = btn.closest('.card');
-                const qtyInput = card.querySelector('.qty-value');
-                const qty = parseInt(qtyInput.value);
+                const qtyControl = card.querySelector('.qty-control');
+                const qtyInput = qtyControl.querySelector('.qty-value');
+                const stok = parseInt(qtyControl.dataset.stok, 10);
+                const qty = parseInt(qtyInput.value, 10);
 
-                addToCart(btn.dataset.id, btn.dataset.name, parseFloat(btn.dataset.price), qty);
+                addToCart(btn.dataset.id, btn.dataset.name, parseFloat(btn.dataset.price), qty, stok);
 
                 // Animasi 'terbang' ke keranjang
                 const img = card.querySelector('img');
@@ -521,12 +556,22 @@
                     document.getElementById('md-name').innerText = data.nama_menu;
                     document.getElementById('md-price').innerText = 'Rp ' + Number(data.harga).toLocaleString('id-ID');
                     document.getElementById('md-rating').innerText = `${parseFloat(data.avg_rating || 0).toFixed(1)}/5 ⭐ (${data.jumlah_ulasan || 0} Ulasan)`;
+                    document.getElementById('md-stok').innerText = `Sisa Stok: ${data.stok || 0}`;
                     document.getElementById('md-detail').innerHTML = data.detail_lengkap || data.deskripsi;
 
                     const addCartBtn = document.getElementById('md-add-cart');
                     addCartBtn.dataset.id = data.id_menu;
                     addCartBtn.dataset.name = data.nama_menu;
                     addCartBtn.dataset.price = data.harga;
+                    addCartBtn.dataset.stok = data.stok;
+
+                    if (data.stok > 0) {
+                        addCartBtn.disabled = false;
+                        addCartBtn.innerHTML = '<i class="bi bi-cart-plus-fill me-2"></i>Tambah ke Keranjang';
+                    } else {
+                        addCartBtn.disabled = true;
+                        addCartBtn.innerText = 'Stok Habis';
+                    }
 
                     // Reset form ulasan
                     document.getElementById('review-comment').value = '';
@@ -558,8 +603,9 @@
 
             // 5. Klik Tombol "Add to Cart" di dalam Modal
             if (target.id === 'md-add-cart') {
-                addToCart(target.dataset.id, target.dataset.name, parseFloat(target.dataset.price), 1);
-                menuModal.hide();
+                const stok = parseInt(target.dataset.stok, 10);
+                addToCart(target.dataset.id, target.dataset.name, parseFloat(target.dataset.price), 1, stok);
+                // menuModal.hide(); // Don't hide, let user add more if they want
             }
 
             // 6. Klik Bintang Rating di Modal

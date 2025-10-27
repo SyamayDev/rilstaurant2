@@ -21,17 +21,18 @@
         .navbar-brand img {
             height: 40px;
             width: auto;
-            margin-right: 8px;
+            margin-right: 2px;
             border-radius: 8px;
             background: #fff;
-            padding: 3px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            padding: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         @media(max-width:576px) {
             .navbar-brand img {
                 height: 34px;
-                margin-right: 6px;
+                margin-right: -15px;
+                margin-left: -8px;
             }
 
             .navbar-brand span {

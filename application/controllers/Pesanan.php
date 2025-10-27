@@ -21,7 +21,7 @@ class Pesanan extends CI_Controller
         // email optional
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', 'Nama dan nomor meja wajib diisi');
-            redirect('/');
+            redirect('Katalog/keranjang');
             return;
         }
 
@@ -62,28 +62,18 @@ class Pesanan extends CI_Controller
         }
 
         $cart = json_decode($this->input->post('cart'), true);
-        $total = 0;
-        $items = [];
-        foreach ($cart as $c) {
-            $subtotal = $c['jumlah'] * $c['harga'];
-            $total += $subtotal;
-            $items[] = [
-                'id_pesanan' => 0, // placeholder
-                'id_menu' => $c['id_menu'],
-                'jumlah' => $c['jumlah'],
-                'subtotal' => $subtotal
-            ];
+        
+        // Create order using the new model method
+        $result = $this->Pesanan_model->create_order($pelanggan_id, $cart);
+
+        if (!$result['success']) {
+            $this->session->set_flashdata('error', $result['message']);
+            redirect('Katalog/keranjang');
+            return;
         }
 
-        $pesanan_id = $this->Pesanan_model->insert([
-            'id_pelanggan' => $pelanggan_id,
-            'total' => $total,
-            'status' => 'pending'
-        ]);
+        $pesanan_id = $result['order_id'];
 
-        // set id_pesanan for items and insert
-        foreach ($items as &$it) $it['id_pesanan'] = $pesanan_id;
-        $this->Detail_model->insert_batch($items);
         // If AJAX request or client asked for JSON, respond with JSON (so client can clear cart and redirect client-side)
         $acceptsJson = false;
         $acceptHeader = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
@@ -145,6 +135,49 @@ class Pesanan extends CI_Controller
         ];
 
         $this->load->view('pelanggan/pesanan_saya', $data);
+    }
+
+    public function batalkan($id_pesanan)
+    {
+        // No specific user auth check seems to be in place for viewing, follow pattern
+        $pesanan = $this->Pesanan_model->get($id_pesanan);
+
+        if (!$pesanan) {
+            $this->session->set_flashdata('error', 'Pesanan tidak ditemukan.');
+            redirect('/'); // Redirect to home if order not found
+            return;
+        }
+
+        // Only allow cancellation if status is 'pending'
+        if (strtolower($pesanan->status) === 'pending') {
+            
+            $this->db->trans_start();
+
+            // 1. Restore stock for each item in the order
+            $detail_items = $this->Detail_model->get_by_order($id_pesanan);
+            foreach ($detail_items as $item) {
+                $this->db->where('id_menu', $item->id_menu);
+                $this->db->set('stok', 'stok + ' . (int)$item->jumlah, FALSE);
+                $this->db->update('menu');
+            }
+
+            // 2. Update order status to 'batal'
+            $this->Pesanan_model->update_status($id_pesanan, 'batal');
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->session->set_flashdata('error', 'Gagal membatalkan pesanan karena kesalahan database.');
+            } else {
+                $this->session->set_flashdata('success', 'Pesanan telah berhasil dibatalkan.');
+            }
+
+        } else {
+            $this->session->set_flashdata('error', 'Pesanan tidak dapat dibatalkan karena sudah diproses.');
+        }
+
+        // Redirect back to the order status page
+        redirect('pesanan/saya/' . $id_pesanan);
     }
 
     // Public API: return minimal JSON status for an order

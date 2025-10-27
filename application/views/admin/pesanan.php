@@ -4,7 +4,8 @@
     <table id="pesananTable" class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>ID</th>
+                <th style="display:none;">ID</th>
+                <th>No</th>
                 <th>Pelanggan</th>
                 <th>Meja</th>
                 <th>Total</th>
@@ -14,17 +15,24 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($pesanan as $p):
-                // try to fetch pelanggan info
+            <?php $no = 1;
+            foreach ($pesanan as $p):
                 $pel = $this->db->get_where('pelanggan', ['id_pelanggan' => $p->id_pelanggan])->row();
             ?>
                 <tr>
-                    <td>#<?= $p->id_pesanan ?></td>
+                    <td style="display:none;"><?= $p->id_pesanan ?></td>
+                    <td><?= $no++ ?></td>
                     <td><?= htmlspecialchars($pel->nama ?? ('#' . $p->id_pelanggan), ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars($pel->no_meja ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
                     <td>Rp <?= number_format($p->total, 0, ',', '.') ?></td>
                     <td>
-                        <?php $badgeClass = in_array(strtolower($p->status), ['selesai', 'done', 'completed']) ? 'bg-success' : (in_array(strtolower($p->status), ['dimasak', 'cooking']) ? 'bg-warning text-dark' : 'bg-secondary'); ?>
+                        <?php
+                        $badgeClass = in_array(strtolower($p->status), ['selesai', 'done', 'completed'])
+                            ? 'bg-success'
+                            : (in_array(strtolower($p->status), ['dimasak', 'cooking'])
+                                ? 'bg-warning text-dark'
+                                : 'bg-secondary');
+                        ?>
                         <span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($p->status, ENT_QUOTES, 'UTF-8') ?></span>
                     </td>
                     <td><?= $p->tanggal ?></td>
@@ -34,12 +42,17 @@
                 </tr>
             <?php endforeach; ?>
         </tbody>
+
     </table>
 </div>
 <?php $this->load->view('_partials/footer_admin'); ?>
 
 <script>
-$(document).ready(function() {
-    $('#pesananTable').DataTable();
-});
+    $(document).ready(function() {
+        $('#pesananTable').DataTable({
+            "order": [
+                [0, "desc"]
+            ] // Kolom pertama (ID) urut menurun
+        });
+    });
 </script>

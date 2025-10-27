@@ -9,7 +9,7 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table id="menuTable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Gambar</th>
@@ -40,3 +40,9 @@
     </div>
 </div>
 <?php $this->load->view('_partials/footer_admin'); ?>
+
+<script>
+$(document).ready(function() {
+    $('#menuTable').DataTable();
+});
+</script>

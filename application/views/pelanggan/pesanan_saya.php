@@ -52,7 +52,6 @@ $is_cancelled = in_array($current_status, $cancel_states, true);
             font-family: 'Poppins', sans-serif;
             background: var(--background-color);
             margin: 0;
-            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -213,6 +212,14 @@ $is_cancelled = in_array($current_status, $cancel_states, true);
                 transform: scale(1.05);
             }
         }
+        @media(max-width:576px) {
+            .navbar-brand img {
+                height: 34px;
+                margin-right: -15px;
+                margin-left: -8px;
+            }
+
+        }
 
         @media(max-width:600px) {
             .step {
@@ -291,6 +298,11 @@ $is_cancelled = in_array($current_status, $cancel_states, true);
             </div>
 
             <div class="controls">
+                <?php if ($current_status === 'pending') : ?>
+                    <a href="<?= base_url('pesanan/batalkan/' . h($pesanan->id_pesanan)) ?>" class="btn btn-danger me-2" onclick="return confirm('Anda yakin ingin membatalkan pesanan ini?')">Batalkan Pesanan</a>
+                <?php else : ?>
+                    <button class="btn btn-danger me-2" onclick="alert('Pesanan sudah diproses, tidak bisa membatalkan pesanan.')">Batalkan Pesanan</button>
+                <?php endif; ?>
                 <a href="<?= base_url('/') ?>" class="btn btn-outline-secondary me-2">Kembali ke Katalog</a>
                 <div class="text-muted mt-2">Silakan ke kasir untuk melakukan pembayaran. Petugas kasir/admin akan memperbarui status pesanan.</div>
             </div>

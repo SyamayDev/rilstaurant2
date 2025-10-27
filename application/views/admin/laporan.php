@@ -79,17 +79,69 @@ document.addEventListener('DOMContentLoaded', function() {
         responsive: true,
         dom: 'Bfrtip',
         buttons: [
-            // === PERUBAHAN DI SINI ===
             {
                 extend: 'print',
                 exportOptions: {
-                    // Tentukan kolom yang ingin di-print (indeks dimulai dari 0)
-                    // 0: ID, 1: Total, 2: Status, 3: Tanggal
-                    // Kolom 4 (Aksi) akan diabaikan.
-                    columns: [ 0, 1, 2, 3 ]
+                    columns: [ 0, 1, 2, 3 ] // Kolom yang akan dicetak
+                },
+                
+                customize: function ( win ) {
+                    
+                    // 1. Hapus judul default jika ada
+                    $(win.document.body).find('h1').remove();
+
+                    // 2. Buat KOP SURAT
+                    var kopSurat = `
+                        <div style="display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 15px; margin-bottom: 30px;">
+                            <div>
+                                <img src="<?= base_url('assets/img/logo.png') ?>" 
+                                     style="height:60px; width:auto; border-radius:6px; margin-right:20px; background:#fff; padding:3px; box-shadow:0 2px 6px rgba(0,0,0,.12)" 
+                                     onerror="this.style.display='none'">
+                            </div>
+                            <div style="line-height: 1.4;">
+                                <h2 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: #6b0f0f;">Rilstaurant</h2>
+                                <h3 style="margin: 0; font-size: 1.4rem; font-weight: 500;">Laporan Penjualan</h3>
+                                <div style="font-size: 0.9rem; color: #333;">Jl. Kuliner Nusantara No. 1, Medan, Indonesia</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 3. Tambahkan KOP SURAT ke bagian ATAS body jendela cetak
+                    $(win.document.body).prepend(kopSurat);
+
+                    // 4. Buat TANDA TANGAN (Footer)
+                    
+                    const today = new Date();
+                    const tgl = today.toLocaleDateString('id-ID', { 
+                        day: '2-digit', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
+
+                    // === PERUBAHAN DI SINI (baris <div> terakhir) ===
+                    var ttd = `
+                        <div style="width: 100%; margin-top: 50px; page-break-inside: avoid;">
+                            <div style="float: right; width: 280px; text-align: center;">
+                                <div>Medan, ${tgl}</div>
+                                <div style="margin-top: 5px;">Hormat kami,</div>
+                                <br><br><br><br>
+                                <div>( Pemilik / Manajer )</div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    `;
+                    // === AKHIR PERUBAHAN ===
+
+                    // 5. Tambahkan TANDA TANGAN ke bagian BAWAH body jendela cetak
+                    $(win.document.body).append(ttd);
+
+                    // 6. Styling Tambahan
+                    $(win.document.body).css('font-size', '10pt');
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
                 }
             }
-            // === AKHIR PERUBAHAN ===
         ]
     });
 
@@ -98,15 +150,10 @@ document.addEventListener('DOMContentLoaded', function() {
         function( settings, data, dataIndex ) {
             var minVal = $('#min').val();
             var maxVal = $('#max').val();
-            var dateVal = data[3]; // Ambil data tanggal dari kolom ke-4 (indeks 3)
-
-            // Cek format tanggal dari tabel. Jika 'YYYY-MM-DD', parsing langsung.
-            // Jika formatnya 'DD/MM/YYYY' atau lainnya, Anda perlu mengubah parsing di bawah.
+            var dateVal = data[3]; 
             var date = new Date(dateVal);
-            
-            // Konversi min/max ke Date object. Tambahkan 'T00:00:00' agar konsisten
             var min = minVal ? new Date(minVal + "T00:00:00") : null;
-            var max = maxVal ? new Date(maxVal + "T23:59:59") : null; // Set ke akhir hari
+            var max = maxVal ? new Date(maxVal + "T23:59:59") : null; 
 
             if (
                 ( min === null && max === null ) ||
@@ -125,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         table.draw();
     });
 
+    // --- Chart.js ---
     const ctx = document.getElementById('salesChart');
     const data = {
         labels: <?= json_encode(array_map(function ($p) {
@@ -143,37 +191,31 @@ document.addEventListener('DOMContentLoaded', function() {
         data
     });
 
-    // === PERUBAHAN: Delete button handler (pakai modal) ===
-    var idToDelete = null; // Variabel untuk menyimpan ID yang akan dihapus
-    var rowToDelete = null; // Variabel untuk menyimpan baris yang akan dihapus
+    // --- Delete button handler (pakai modal) ---
+    var idToDelete = null; 
+    var rowToDelete = null; 
 
     $('#laporanTable').on('click', '.delete-btn', function(e) {
         e.preventDefault();
         idToDelete = $(this).data('id');
-        rowToDelete = $(this).parents('tr'); // Simpan baris
+        rowToDelete = $(this).parents('tr'); 
         
-        // Tampilkan modal konfirmasi
         $('#deleteConfirmModal').modal('show');
     });
 
     // Handle klik tombol "Hapus" di modal
     $('#confirmDeleteBtn').on('click', function() {
         if (idToDelete && rowToDelete) {
-            // Sembunyikan modal
             $('#deleteConfirmModal').modal('hide');
             
-            // Di sini Anda bisa menambahkan logika AJAX untuk menghapus data di server
             // $.post('url/ke/controller_hapus', { id: idToDelete }, function(response) { ... });
 
-            // Hapus baris dari tabel
             table.row(rowToDelete).remove().draw();
             
-            // Reset variabel
             idToDelete = null; 
             rowToDelete = null;
         }
     });
-    // === AKHIR PERUBAHAN ===
 });
 </script>
 <?php $this->load->view('_partials/footer_admin'); ?>
