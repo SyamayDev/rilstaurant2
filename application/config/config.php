@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://syamaydev.my.id/rilstaurant2/'; // Ganti dengan URL website Anda
+$config['base_url'] = 'https://syamaydev.my.id/rilstaurant/'; // Ganti dengan URL website Anda
 
 /*
 |--------------------------------------------------------------------------

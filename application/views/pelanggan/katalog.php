@@ -3,7 +3,7 @@
 <!-- GLOBAL BACKGROUND -->
 <style>
     body {
-        background: url('<?= base_url('assets/img/batik.png') ?>') repeat fixed;
+        background: url('<?= base_url('assets/img/batik.webp') ?>') repeat fixed;
         background-size: 200px auto;
         position: relative;
     }
@@ -27,7 +27,7 @@
         <div class="container d-flex align-items-center justify-content-between flex-column flex-md-row">
             <div class="text-center text-md-start">
                 <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
-                    <img src="<?= base_url('assets/img/logo.png') ?>" alt="Rilstaurant Logo"
+                    <img src="<?= base_url('assets/img/logo.webp') ?>" alt="Rilstaurant Logo"
                         style="height:70px; width:auto; margin-right:10px; border-radius:12px; background:#fff; padding:4px; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
                     <h1 class="fw-bold mb-0" style="text-shadow:2px 2px 6px rgba(0,0,0,0.4)">Rilstaurant</h1>
                 </div>
@@ -52,7 +52,7 @@
             <div class="category-tiles-container d-flex flex-nowrap gap-3 mt-3" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;">
                 <div class="text-center kategori-tile" style="flex: 0 0 110px; cursor:pointer" data-kategori-id="all">
                     <div style="width:110px; height:110px; overflow:hidden; border-radius:50%; position:relative; background:#fff; display:flex; align-items:center; justify-content:center;">
-                        <img src="<?= base_url('assets/img/all-categories.png') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover">
+                        <img src="<?= base_url('assets/img/all-categories.webp') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover">
                         <div class="small" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:5px 0; backdrop-filter:blur(5px);">Semua</div>
                     </div>
                 </div>  
@@ -126,7 +126,7 @@
     <div class="row g-3">
         <!-- Satu banner besar -->
         <div class="col-12">
-            <div style="background:url('<?= base_url('assets/img/banner1.png') ?>') center/cover no-repeat; border-radius:15px; min-height:180px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/banner1.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:180px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h3 class="fw-bold mb-2">Diskon 25% untuk Menu Spesial Hari Ini!</h3>
@@ -138,7 +138,7 @@
 
         <!-- Dua banner kecil -->
         <div class="col-12 col-md-6">
-            <div style="background:url('<?= base_url('assets/img/banner2.png') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/banner2.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h5 class="fw-bold mb-1">Gratis Minuman Dingin</h5>
@@ -149,7 +149,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <div style="background:url('<?= base_url('assets/img/banner3.png') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/banner3.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h5 class="fw-bold mb-1">Paket Keluarga Hemat</h5>

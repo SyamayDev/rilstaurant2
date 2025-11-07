@@ -46,7 +46,7 @@
     <nav class="navbar brand navbar-expand-lg p-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center text-light" href="<?= base_url() ?>">
-                <img src="<?= base_url('assets/img/logo.png') ?>" alt="Logo Rilstaurant" onerror="this.style.display='none'">
+                <img src="<?= base_url('assets/img/logo.webp') ?>" alt="Logo Rilstaurant" onerror="this.style.display='none'">
                 <span class="fw-bold"></span>
             </a>
             <div class="ms-auto d-flex align-items-center">

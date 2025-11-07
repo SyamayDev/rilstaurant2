@@ -80,8 +80,8 @@
     <div class="receipt">
         
         <div class="logo">
-            <?php if (file_exists(FCPATH . 'assets/img/logo.png')): ?>
-                <img width="100px" height="100px" style="border-radius: 20px; margin-bottom: 20px;" src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
+            <?php if (file_exists(FCPATH . 'assets/img/logo.webp')): ?>
+                <img width="100px" height="100px" style="border-radius: 20px; margin-bottom: 20px;" src="<?= base_url('assets/img/logo.webp') ?>" alt="logo">
             <?php else: ?>
                 <h2>Rilstaurant</h2>
             <?php endif; ?>

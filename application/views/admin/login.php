@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: url('<?= base_url("assets/img/batik.png") ?>') repeat center fixed;
+            background: url('<?= base_url("assets/img/batik.webp") ?>') repeat center fixed;
             background-size: 200px auto;
             min-height: 100vh;
             display: flex;
@@ -70,7 +70,7 @@
             <div class="col-md-4 col-11">
                 <div class="card card-login p-4 text-center">
                     <div class="logo-container">
-                        <img src="<?= base_url('assets/img/logo.png') ?>" alt="Rilstaurant Logo">
+                        <img src="<?= base_url('assets/img/logo.webp') ?>" alt="Rilstaurant Logo">
                     </div>
                     <h4 class="mb-3 fw-bold">Login Admin</h4>
                     <form method="post" action="<?= base_url('admin/login_action') ?>">

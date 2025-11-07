@@ -57,7 +57,7 @@
         <div class="sidebar p-3" id="sidebar">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <a href="<?= base_url() ?>"><img src="<?= base_url('assets/img/logo.png') ?>" alt="logo" style="height:42px;width:auto;border-radius:6px;margin-right:8px;background:#fff;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,.12)" onerror="this.style.display='none'"></a>
+                    <a href="<?= base_url() ?>"><img src="<?= base_url('assets/img/logo.webp') ?>" alt="logo" style="height:42px;width:auto;border-radius:6px;margin-right:8px;background:#fff;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,.12)" onerror="this.style.display='none'"></a>
                     <h4 class="m-0">Admin</h4>
                 </div>
                 <button class="btn btn-sm btn-outline-light d-md-none" id="sidebarClose">✕</button>
@@ -74,7 +74,7 @@
             </ul>
             <div class="mt-auto pt-3 border-top" style="font-size:13px;">
                 <div class="d-flex align-items-center">
-                    <img src="<?= base_url('assets/img/logo.png') ?>" alt="logo" style="height:36px;width:auto;border-radius:6px;margin-right:8px;background:#fff;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,.08)" onerror="this.style.display='none'">
+                    <img src="<?= base_url('assets/img/logo.webp') ?>" alt="logo" style="height:36px;width:auto;border-radius:6px;margin-right:8px;background:#fff;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,.08)" onerror="this.style.display='none'">
                     <div>
                         <div class="fw-semibold">Rilstaurant</div>
                         <div class="text-white">Admin Panel</div>
