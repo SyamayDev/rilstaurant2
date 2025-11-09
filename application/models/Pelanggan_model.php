@@ -20,4 +20,22 @@ class Pelanggan_model extends CI_Model
     {
         return $this->db->get_where($this->table, ['id_pelanggan' => $id])->row();
     }
+
+    public function get_customers_with_email()
+    {
+        $this->db->where('email IS NOT NULL');
+        $this->db->where('email !=', '');
+        return $this->db->get($this->table)->result();
+    }
+
+    public function get_customers_by_ids($ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        $this->db->where_in('id_pelanggan', $ids);
+        $this->db->where('email IS NOT NULL');
+        $this->db->where('email !=', '');
+        return $this->db->get($this->table)->result();
+    }
 }

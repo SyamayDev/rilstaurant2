@@ -1,4 +1,31 @@
 <?php $this->load->view('_partials/header_pelanggan'); ?>
+<?php $settings = get_website_settings(); ?>
+
+<style>
+    :root {
+        --font-color: #000000;
+        --background-color: #FFFFFF;
+        --font-color-secondary: #FFFFFF;
+        --background-color-secondary: #6b0f0f;
+    }
+
+    body {
+        color: var(--font-color);
+        background-color: var(--background-color);
+    }
+
+    .text-white {
+        color: var(--font-color-secondary) !important;
+    }
+
+    .bg-danger {
+        background-color: var(--background-color-secondary) !important;
+    }
+
+    .text-danger {
+        color: var(--background-color-secondary) !important;
+    }
+</style>
 
 <!-- GLOBAL BACKGROUND -->
 <style>
@@ -27,7 +54,7 @@
         <div class="container d-flex align-items-center justify-content-between flex-column flex-md-row">
             <div class="text-center text-md-start">
                 <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
-                    <img src="<?= base_url('assets/img/logo.webp') ?>" alt="Rilstaurant Logo"
+                    <img src="<?= base_url('assets/img/' . ($settings->logo ?? 'logo.webp')) ?>" alt="Rilstaurant Logo"
                         style="height:70px; width:auto; margin-right:10px; border-radius:12px; background:#fff; padding:4px; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
                     <h1 class="fw-bold mb-0" style="text-shadow:2px 2px 6px rgba(0,0,0,0.4)">Rilstaurant</h1>
                 </div>
@@ -52,7 +79,7 @@
             <div class="category-tiles-container d-flex flex-nowrap gap-3 mt-3" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;">
                 <div class="text-center kategori-tile" style="flex: 0 0 110px; cursor:pointer" data-kategori-id="all">
                     <div style="width:110px; height:110px; overflow:hidden; border-radius:50%; position:relative; background:#fff; display:flex; align-items:center; justify-content:center;">
-                        <img src="<?= base_url('assets/img/all-categories.webp') ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover">
+                        <img src="<?= base_url('assets/img/' . ($settings->all_categories_icon ?? 'all-categories.webp')) ?>" alt="Semua" style="max-width:100%; max-height:100%; object-fit:cover">
                         <div class="small" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:5px 0; backdrop-filter:blur(5px);">Semua</div>
                     </div>
                 </div>  
@@ -126,7 +153,7 @@
     <div class="row g-3">
         <!-- Satu banner besar -->
         <div class="col-12">
-            <div style="background:url('<?= base_url('assets/img/banner1.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:180px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/' . ($settings->banner1 ?? 'banner1.webp')) ?>') center/cover no-repeat; border-radius:15px; min-height:180px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h3 class="fw-bold mb-2">Diskon 25% untuk Menu Spesial Hari Ini!</h3>
@@ -138,7 +165,7 @@
 
         <!-- Dua banner kecil -->
         <div class="col-12 col-md-6">
-            <div style="background:url('<?= base_url('assets/img/banner2.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/' . ($settings->banner2 ?? 'banner2.webp')) ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h5 class="fw-bold mb-1">Gratis Minuman Dingin</h5>
@@ -149,7 +176,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <div style="background:url('<?= base_url('assets/img/banner3.webp') ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
+            <div style="background:url('<?= base_url('assets/img/' . ($settings->banner3 ?? 'banner3.webp')) ?>') center/cover no-repeat; border-radius:15px; min-height:150px; position:relative; overflow:hidden;">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;">
                     <div>
                         <h5 class="fw-bold mb-1">Paket Keluarga Hemat</h5>
@@ -168,22 +195,22 @@
         <div class="col-md-6">
             <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; backdrop-filter: blur(5px); height: 302px;">
                 <h5 class="text-white">Alamat</h5>
-                <p class="text-white">Jl. Contoh No. 123, Jakarta Selatan, Indonesia</p>
+                <p class="text-white"><?= $settings->alamat ?? 'Jl. Contoh No. 123, Jakarta Selatan, Indonesia' ?></p>
                 <h5 class="text-white">Jam Operasional</h5>
                 <ul class="text-white">
-                    <li>Senin: 10:00 - 22:00</li>
-                    <li>Selasa: 10:00 - 22:00</li>
-                    <li>Rabu: 10:00 - 22:00</li>
-                    <li>Kamis: 10:00 - 22:00</li>
-                    <li>Jumat: 10:00 - 22:00</li>
-                    <li>Sabtu: 09:00 - 23:00</li>
-                    <li>Minggu: 09:00 - 23:00</li>
+                    <li>Senin: <?= $settings->jam_senin ?? 'Tutup' ?></li>
+                    <li>Selasa: <?= $settings->jam_selasa ?? 'Tutup' ?></li>
+                    <li>Rabu: <?= $settings->jam_rabu ?? 'Tutup' ?></li>
+                    <li>Kamis: <?= $settings->jam_kamis ?? 'Tutup' ?></li>
+                    <li>Jumat: <?= $settings->jam_jumat ?? 'Tutup' ?></li>
+                    <li>Sabtu: <?= $settings->jam_sabtu ?? 'Tutup' ?></li>
+                    <li>Minggu: <?= $settings->jam_minggu ?? 'Tutup' ?></li>
                 </ul>
             </div>
         </div>
         <div class="col-md-6 d-flex" style="align-items:stretch;">
             <div style="width:100%; border-radius:12px; overflow:hidden;">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9595899971787!2d98.74362218741439!3d3.5967361108179543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131d71ef31655%3A0xafa68e3f1072fad5!2sToko%20Mas%20%26%20Permata%20ARUL%20MANDAI!5e0!3m2!1sid!2sid!4v1761053676380!5m2!1sid!2sid" width="100%" height="300" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="<?= $settings->google_maps_link ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9595899971787!2d98.74362218741439!3d3.5967361108179543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131d71ef31655%3A0xafa68e3f1072fad5!2sToko%20Mas%20%26%20Permata%20ARUL%20MANDAI!5e0!3m2!1sid!2sid!4v1761053676380!5m2!1sid!2sid' ?>" width="100%" height="300" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>

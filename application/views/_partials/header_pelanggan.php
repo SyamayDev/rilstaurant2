@@ -1,3 +1,4 @@
+<?php $settings = get_website_settings(); ?>
 <!doctype html>
 <html lang="en">
 
@@ -5,17 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Restoran</title>
+    <link rel="icon" href="<?= base_url('assets/img/logo.webp') ?>" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background: #fff6f5;
-            color: #3b0a0a;
+            background: #FFFFFF;
+            color: #000000;
         }
 
         .brand {
             background: #6b0f0f;
-            color: #f6e9d8;
+            color: #FFFFFF;
         }
 
         .navbar-brand img {

@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://syamaydev.my.id/rilstaurant/'; // Ganti dengan URL website Anda
+$config['base_url'] = 'https://syamaydev.my.id/rilstaurant/';
 
 /*
 |--------------------------------------------------------------------------
@@ -521,3 +521,14 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Gemini API Key
+|--------------------------------------------------------------------------
+|
+| Your Google Gemini API key.
+|
+*/
+$config['gemini_api_key'] = 'AIzaSyB175Cx5XHI2FOOmTVQz6MJYsRzsctE4xg';
+

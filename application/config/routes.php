@@ -53,5 +53,10 @@ $route['default_controller'] = 'Loader';
 $route['katalog'] = 'Katalog';
 $route['admin'] = 'admin';
 $route['admin/dashboard'] = 'admin/dashboard';
+
+// Chatbot API routes
+$route['api/chat'] = 'Api/chat';
+$route['api/chat/clear'] = 'Api/clear_chat';
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

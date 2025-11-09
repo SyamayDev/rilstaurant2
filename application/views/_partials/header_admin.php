@@ -1,3 +1,4 @@
+<?php $settings = get_website_settings(); ?>
 <!doctype html>
 <html lang="en">
 
@@ -5,19 +6,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin - Restoran</title>
+        <link rel="icon" href="<?= base_url('assets/img/logo.webp') ?>" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <style>
         .sidebar {
-            background: #6b0f0f;
-            color: #fff;
+            background: #6b0f0f; /* Hardcoded primary color */
+            color: #FFFFFF; /* Hardcoded font color for sidebar */
             min-height: 100vh
         }
 
         .content {
-            background: #fff6f5
+            background: #FFFFFF; /* Hardcoded content background color */
         }
     </style>
 </head>
@@ -66,10 +68,13 @@
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('menu') ?>">Menu</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('kategori') ?>">Kategori</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_promo') ?>">Manajemen Promo</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('pesanan') ?>">Pesanan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_ulasan') ?>">Ulasan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('laporan') ?>">Laporan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/qr_code') ?>">QR Code</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_email') ?>">Kirim Email</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_settings') ?>">Pengaturan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/logout') ?>">Logout</a></li>
             </ul>
             <div class="mt-auto pt-3 border-top" style="font-size:13px;">

@@ -86,4 +86,15 @@ class Menu_model extends CI_Model
     {
         return $this->db->delete($this->table, ['id_menu' => $id]);
     }
+
+    public function get_best_seller($limit = 5)
+    {
+        $this->db->select('m.nama_menu, SUM(dp.jumlah) as total_terjual');
+        $this->db->from('menu m');
+        $this->db->join('detail_pesanan dp', 'm.id_menu = dp.id_menu');
+        $this->db->group_by('m.id_menu');
+        $this->db->order_by('total_terjual', 'DESC');
+        $this->db->limit($limit);
+        return $this->db->get()->result();
+    }
 }

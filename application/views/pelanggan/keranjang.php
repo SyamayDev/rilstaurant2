@@ -205,9 +205,11 @@
         async function loadMeja() {
             try {
                 const res = await fetch('<?= base_url('pesanan/occupied_tables') ?>');
+                const settingsRes = await fetch('<?= base_url('api/settings/get_jumlah_meja') ?>');
+                if (!res.ok || !settingsRes.ok) throw new Error('Gagal mengambil data meja.');
                 const occupied = await res.json();
-                // assume restaurant has meja 1..20 (adjust if you have different layout)
-                const totalMeja = 20;
+                const settings = await settingsRes.json();
+                const totalMeja = settings.jumlah_meja || 20;
                 const sel = document.getElementById('select-meja');
                 sel.innerHTML = '<option value="">Pilih nomor meja...</option>';
                 for (let i = 1; i <= totalMeja; i++) {
@@ -218,7 +220,8 @@
                     sel.appendChild(opt);
                 }
             } catch (e) {
-                // fail silently, leave select with default
+                console.error("Gagal memuat nomor meja:", e);
+                // Jika gagal, biarkan select dengan opsi default
             }
         }
         loadMeja();
