@@ -68,7 +68,6 @@
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('menu') ?>">Menu</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('kategori') ?>">Kategori</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_promo') ?>">Manajemen Promo</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('pesanan') ?>">Pesanan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('admin_ulasan') ?>">Ulasan</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="<?= base_url('laporan') ?>">Laporan</a></li>

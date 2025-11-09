@@ -33,6 +33,10 @@ class Api extends CI_Controller
             $context .= "- " . html_escape($item->nama_menu) . " - " . $harga . " - " . html_escape($item->deskripsi) . "\n";
         }
 
+        $context .= "\nCara Memesan:\nProses pemesanan di Rilstaurant sangat mudah. Berikut langkah-langkahnya:\n1. Pelanggan memilih menu yang diinginkan dari katalog dan menambahkannya ke keranjang.\n2. Setelah selesai memilih, pelanggan masuk ke halaman keranjang untuk memeriksa pesanannya, lalu klik 'Pesan Sekarang'.\n3. Pelanggan akan mendapatkan nomor pesanan.\n4. Pelanggan datang ke kasir, menunjukkan nomor pesanan, dan melakukan pembayaran.\n5. Status pesanan (apakah sedang dimasak atau sudah siap) dapat dipantau secara langsung di halaman 'Lacak Pesanan' di website.\n";
+
+        $context .= "\nCara Membayar:\nUntuk pembayaran, pelanggan melakukan pemesanan online terlebih dahulu, kemudian datang ke kasir untuk membayar pesanannya secara tunai atau non-tunai sambil menunjukkan nomor pesanannya.\n";
+
         $context .= "\nInformasi Tambahan: Rilstaurant adalah restoran keluarga yang menyajikan masakan khas Indonesia dengan resep turun-temurun. Kami buka setiap hari dari jam 10:00 pagi hingga 22:00 malam. Lokasi kami ada di Jl. Merdeka No. 123, Jakarta. Selalu jawab dengan ramah, sopan, dan dalam Bahasa Indonesia.";
 
         return $context;

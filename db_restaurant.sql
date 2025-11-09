@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2025 at 11:58 AM
+-- Generation Time: Nov 09, 2025 at 06:42 AM
 -- Server version: 8.0.30
 -- PHP Version: 7.4.32
 
@@ -346,15 +346,15 @@ CREATE TABLE `tbl_settings` (
   `jam_sabtu` varchar(255) DEFAULT NULL,
   `jam_minggu` varchar(255) DEFAULT NULL,
   `google_maps_link` text,
-  `jumlah_meja` int DEFAULT '20'
+  `all_categories_icon` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_settings`
 --
 
-INSERT INTO `tbl_settings` (`id`, `logo`, `banner1`, `banner2`, `banner3`, `alamat`, `jam_senin`, `jam_selasa`, `jam_rabu`, `jam_kamis`, `jam_jumat`, `jam_sabtu`, `jam_minggu`, `google_maps_link`, `jumlah_meja`) VALUES
-(1, 'logo.webp', 'banner1.webp', 'banner2.webp', 'banner3.webp', 'Jl. Raya Rilstaurant No. 123, Jakarta', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '09:00 - 23:00', '09:00 - 23:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.576684832552!2d106.8271528147891!3d-6.19442019552222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f4236d2b086d%3A0x7b23d8b4e2a7a9b2!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1623123456789!5m2!1sen!2sid', 25);
+INSERT INTO `tbl_settings` (`id`, `logo`, `banner1`, `banner2`, `banner3`, `alamat`, `jam_senin`, `jam_selasa`, `jam_rabu`, `jam_kamis`, `jam_jumat`, `jam_sabtu`, `jam_minggu`, `google_maps_link`, `all_categories_icon`) VALUES
+(1, 'logo.webp', 'banner1.webp', 'banner2.webp', 'banner3.webp', 'Jl. Raya Rilstaurant No. 123, Jakarta', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '10:00 - 22:00', '09:00 - 23:00', '09:00 - 23:00', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.576684832552!2d106.8271528147891!3d-6.19442019552222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f4236d2b086d%3A0x7b23d8b4e2a7a9b2!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1623123456789!5m2!1sen!2sid', 'all-categories.webp');
 
 -- --------------------------------------------------------
 
